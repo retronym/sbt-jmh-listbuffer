@@ -37,7 +37,7 @@ class Lists {
   }
 
   static class ListBuffer {
-    private List first = Nil.instance;
+    private List start = Nil.instance;
     private Cons last0 = null;
     private boolean aliased = false;
     private int len = 0;
@@ -45,7 +45,7 @@ class Lists {
     void addOne(Object elem) {
       ensureUnaliased();
       Cons last1 = new Cons(elem, Nil.instance);
-      if (len == 0) first = last1;
+      if (len == 0) start = last1;
       else last0.next = last1;
       last0 = last1;
       len += 1;
@@ -53,7 +53,7 @@ class Lists {
 
     List result() {
       aliased = len > 0;
-      return first;
+      return start;
     }
 
     private void ensureUnaliased() {
@@ -61,20 +61,20 @@ class Lists {
     }
 
     private void copyElems() {
-      if (first instanceof Cons) {
-        Cons rest = (Cons) this.first;
+      if (start instanceof Cons) {
+        Cons rest = (Cons) this.start;
         ListBufferResultFence buf = new ListBufferResultFence();
         do {
           buf.addOne(rest.head);
         } while (rest.next != Nil.instance && ((rest = (Cons) rest.next) == rest));
-        this.first = buf.first;
+        this.start = buf.start;
         this.last0 = buf.last0;
       }
     }
   }
 
   static class ListBufferConstructorAndResultFence {
-    private List first = Nil.instance;
+    private List start = Nil.instance;
     private Cons last0 = null;
     private boolean aliased = false;
     private int len = 0;
@@ -82,7 +82,7 @@ class Lists {
     void addOne(Object elem) {
       ensureUnaliased();
       Cons last1 = Cons.applyFenced(elem, Nil.instance);
-      if (len == 0) first = last1;
+      if (len == 0) start = last1;
       else last0.next = last1;
       last0 = last1;
       len += 1;
@@ -91,7 +91,7 @@ class Lists {
     List result() {
       aliased = len > 0;
       VarHandle.releaseFence();
-      return first;
+      return start;
     }
 
     private void ensureUnaliased() {
@@ -99,20 +99,20 @@ class Lists {
     }
 
     private void copyElems() {
-      if (first instanceof Cons) {
-        Cons rest = (Cons) this.first;
+      if (start instanceof Cons) {
+        Cons rest = (Cons) this.start;
         ListBufferResultFence buf = new ListBufferResultFence();
         do {
           buf.addOne(rest.head);
         } while (rest.next != Nil.instance && ((rest = (Cons) rest.next) == rest));
-        this.first = buf.first;
+        this.start = buf.start;
         this.last0 = buf.last0;
       }
     }
   }
 
   static class ListBufferResultFence {
-    private List first = Nil.instance;
+    private List start = Nil.instance;
     private Cons last0 = null;
     private boolean aliased = false;
     private int len = 0;
@@ -120,7 +120,7 @@ class Lists {
     void addOne(Object elem) {
       ensureUnaliased();
       Cons last1 = new Cons(elem, Nil.instance);
-      if (len == 0) first = last1;
+      if (len == 0) start = last1;
       else last0.next = last1;
       last0 = last1;
       len += 1;
@@ -129,7 +129,7 @@ class Lists {
     List result() {
       aliased = len > 0;
       VarHandle.releaseFence();
-      return first;
+      return start;
     }
 
     private void ensureUnaliased() {
@@ -137,13 +137,13 @@ class Lists {
     }
 
     private void copyElems() {
-      if (first instanceof Cons) {
-        Cons rest = (Cons) this.first;
+      if (start instanceof Cons) {
+        Cons rest = (Cons) this.start;
         ListBufferResultFence buf = new ListBufferResultFence();
         do {
           buf.addOne(rest.head);
         } while (rest.next != Nil.instance && ((rest = (Cons) rest.next) == rest));
-        this.first = buf.first;
+        this.start = buf.start;
         this.last0 = buf.last0;
       }
     }

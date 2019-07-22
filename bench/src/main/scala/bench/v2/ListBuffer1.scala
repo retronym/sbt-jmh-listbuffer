@@ -3,8 +3,8 @@ package bench.v2
 final class ListBuffer1[A] {
   private var start: List1[A] = Nil1
   private var last0: ::[A] = _
-  private var exported: Boolean = false
-  private var len = 0
+  private[this] var exported: Boolean = false
+  private[this] var len = 0
 
   def isEmpty: Boolean = len == 0
   def nonEmpty: Boolean = len > 0
@@ -14,20 +14,23 @@ final class ListBuffer1[A] {
     *  @param x  the element to append.
     *  @return   this $coll.
     */
-  def += (x: A): this.type = {
-    if (exported) copy()
+  def += (x: A): Unit = {
+    ensureUnaliased()
+    val last1 = new :: (x, Nil1)
     if (isEmpty) {
-      last0 = new :: (x, Nil1)
+      last0 = last1
       start = last0
     } else {
       val last1 = last0
-      last0 = new :: (x, Nil1)
+      last0 = last1
       last1.tl = last0
     }
     len += 1
-    this
   }
 
+  private def ensureUnaliased() = {
+    if (exported) copy()
+  }
   /** Clears the buffer contents.
     */
   def clear() {
