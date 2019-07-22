@@ -6,11 +6,12 @@
 **                          |/                                          **
 \*                                                                      */
 
-package bench
+package bench.v2
+
+import java.io.{ObjectInputStream, ObjectOutputStream}
 
 import scala.collection.generic._
 import scala.collection.{mutable, _}
-import java.io.{ObjectInputStream, ObjectOutputStream}
 
 /** A `Buffer` implementation backed by a list. It provides constant time
   *  prepend and append. Most other operations are linear.
@@ -50,7 +51,6 @@ final class ListBuffer1[A]
   override def companion: GenericCompanion[ListBuffer1] = ListBuffer1
 
   import scala.collection.Traversable
-  import scala.collection.immutable.ListSerializeEnd
 
   /** Expected invariants:
     *  If start.isEmpty, last0 == null
@@ -63,7 +63,7 @@ final class ListBuffer1[A]
   private var exported: Boolean = false
   private var len = 0
 
-  protected def underlying: List1[A] = start
+  protected def underlying= ???
 
   private def writeObject(out: ObjectOutputStream) {
     ???

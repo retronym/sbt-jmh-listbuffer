@@ -1,6 +1,7 @@
 package bench;
 
 
+import bench.v1.ListBuffer1;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 import scala.collection.mutable.ListBuffer;
@@ -78,9 +79,19 @@ public class ListsBenchmark {
   }
 
   @Benchmark
-  @CompilerControl(PRINT)
-  public Object benchList(Blackhole bh) {
-    ListBuffer1<String> buffer = new ListBuffer1<>();
+  public Object benchListV1(Blackhole bh) {
+    bench.v1.ListBuffer1<String> buffer = new bench.v1.ListBuffer1<>();
+    int i = 0;
+    while (i < size) {
+      buffer.$plus$eq("");
+      i += 1;
+    }
+    return buffer.result();
+  }
+
+  @Benchmark
+  public Object benchListV2(Blackhole bh) {
+    bench.v2.ListBuffer1<String> buffer = new bench.v2.ListBuffer1<>();
     int i = 0;
     while (i < size) {
       buffer.$plus$eq("");

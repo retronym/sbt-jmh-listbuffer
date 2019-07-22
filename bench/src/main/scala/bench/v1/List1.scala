@@ -6,16 +6,15 @@
 **                          |/                                          **
 \*                                                                      */
 
-package bench
+package bench.v1
 
-import scala.collection.generic._
-import scala.collection.mutable.Builder
-import scala.annotation.tailrec
 import java.io.{ObjectInputStream, ObjectOutputStream}
-import java.lang.invoke.VarHandle
 
-import scala.collection.{AbstractSeq, GenTraversableOnce, LinearSeqOptimized}
+import scala.annotation.tailrec
+import scala.collection.generic._
 import scala.collection.immutable.LinearSeq
+import scala.collection.mutable.Builder
+import scala.collection.{AbstractSeq, GenTraversableOnce, LinearSeqOptimized}
 
 /** A class for immutable linked lists representing ordered collections
   *  of elements of type `A`.
@@ -110,7 +109,7 @@ sealed abstract class List1[+A] extends AbstractSeq[A]
     *    {{{1 :: List1(2, 3) = List1(2, 3).::(1) = List1(1, 2, 3)}}}
     */
   def ::[B >: A] (x: B): List1[B] =
-    new bench.::(x, this)
+    new ::(x, this)
 
   /** Adds the elements of a given list in front of this list.
     *  @param prefix  The list elements to prepend.
