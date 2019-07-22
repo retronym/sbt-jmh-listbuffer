@@ -86,10 +86,20 @@ public class ListsBenchmark {
     return buffer.result();
   }
 
-
   @Benchmark
   public Object benchListV2(Blackhole bh) {
-    bench.v2.ListBuffer1<String> buffer = new bench.v2.ListBuffer1<>();
+    bench.v2.ListBuffer<String> buffer = new bench.v2.ListBuffer<>();
+    int i = 0;
+    while (i < size) {
+      buffer.$plus$eq("");
+      i += 1;
+    }
+    return buffer.result();
+  }
+
+  @Benchmark
+  public Object benchListV3(Blackhole bh) {
+    bench.v3.ListBuffer1<String> buffer = new bench.v3.ListBuffer1<>();
     int i = 0;
     while (i < size) {
       buffer.$plus$eq("");

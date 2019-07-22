@@ -1,7 +1,5 @@
 package bench;
 
-import bench.v2.Nil1$;
-
 import java.lang.invoke.VarHandle;
 
 class Lists {

@@ -1,55 +1,111 @@
 package bench.v2
 
-import java.lang.invoke.VarHandle
+import scala.annotation.tailrec
+import scala.collection.generic.DefaultSerializable
+import scala.collection.{IterableFactoryDefaults, IterableOnce, Iterator, SeqFactory, StrictOptimizedSeqFactory, StrictOptimizedSeqOps, immutable}
+import scala.collection.mutable.{AbstractBuffer, Builder, GrowableBuilder, ReusableBuilder, SeqOps}
+import scala.runtime.Statics.releaseFence
 
-final class ListBuffer1[A] {
-  private var start: List1[A] = Nil1
-  private var last0: ::[A] = _
-  private[this] var exported: Boolean = false
+class ListBuffer[A]
+  extends AbstractBuffer[A]
+    with SeqOps[A, ListBuffer, ListBuffer[A]]
+    with StrictOptimizedSeqOps[A, ListBuffer, ListBuffer[A]]
+    with ReusableBuilder[A, List[A]]
+    with IterableFactoryDefaults[A, ListBuffer]
+    with DefaultSerializable {
+
+  private var first: List[A] = Nil
+  private var last0: ::[A] = null
+  private[this] var aliased = false
   private[this] var len = 0
 
-  def isEmpty: Boolean = len == 0
-  def nonEmpty: Boolean = len > 0
+  private type Predecessor[A0] = ::[A0] /*| Null*/
 
-  /** Appends a single element to this buffer. This operation takes constant time.
-    *
-    *  @param x  the element to append.
-    *  @return   this $coll.
-    */
-  def += (x: A): Unit = {
+  def iterator = first.iterator
+
+  override def iterableFactory: SeqFactory[ListBuffer] = ListBuffer
+
+  @throws[IndexOutOfBoundsException]
+  def apply(i: Int) = first.apply(i)
+
+  def length = len
+  override def knownSize = len
+
+  override def isEmpty: Boolean = len == 0
+
+  private def copyElems(): Unit = {
+    val buf = ListBuffer.from(this)
+    first = buf.first
+    last0 = buf.last0
+    aliased = false
+  }
+
+  private def ensureUnaliased() = if (aliased) copyElems()
+
+  def result(): List[A] = {
+    aliased = nonEmpty
+    // We've accumulated a number of mutations to `List.tail` by this stage.
+    // Make sure they are visible to threads that the client of this ListBuffer might be about
+    // to share this List with.
+    releaseFence()
+    first
+  }
+
+
+  def clear(): Unit = {
+    first = Nil
+    len = 0
+    last0 = null
+    aliased = false
+  }
+
+  final def addOne(elem: A): this.type = {
     ensureUnaliased()
-    var last1 = new ::(x, Nil1)
-    if (len == 0) start = last1; else last0.tl = last1
+    val last1 = new ::[A](elem, Nil)
+    if (len == 0) first = last1 else last0.next = last1
     last0 = last1
     len += 1
+    this
   }
 
-  private def ensureUnaliased() = {
-    if (exported) copy()
-  }
-  /** Clears the buffer contents.
+  def update(idx: Int, elem: A): Unit = ???
+  def insert(idx: Int, elem: A): Unit = ???
+  def insertAll(idx: Int, elems: scala.collection.IterableOnce[A]): Unit = ???
+  def patchInPlace(from: Int, patch: scala.collection.IterableOnce[A], replaced: Int): this.type = ???
+  def prepend(elem: A): this.type = ???
+  def remove(idx: Int, count: Int): Unit = ???
+  def remove(idx: Int): A = ???
+
+  /**
+    * Selects the last element.
+    *
+    * Runs in constant time.
+    *
+    * @return The last element of this $coll.
+    * @throws NoSuchElementException If the $coll is empty.
     */
-  def clear() {
-    start = Nil1
-    last0 = null
-    exported = false
-    len = 0
-  }
+  override def last: A = if (last0 eq null) throw new NoSuchElementException("last of empty ListBuffer") else last0.head
 
-  def result: List1[A] = {
-    exported = !isEmpty
-    VarHandle.releaseFence()
-    start
-  }
+  /**
+    * Optionally selects the last element.
+    *
+    * Runs in constant time.
+    *
+    * @return the last element of this $coll$ if it is nonempty, `None` if it is empty.
+    */
+  override def lastOption: Option[A] = if (last0 eq null) None else Some(last0.head)
 
-  private def copy() {
-    if (isEmpty) return
-    var cursor = start
-    val limit = last0.tail
-    clear()
-    while (cursor ne limit) {
-      this += cursor.head
-      cursor = cursor.tail
-    }
-  }
+  @deprecatedOverriding("Compatibility override", since="2.13.0")
+  override protected[this] def stringPrefix = "ListBuffer"
+
+}
+
+@SerialVersionUID(3L)
+object ListBuffer extends StrictOptimizedSeqFactory[ListBuffer] {
+
+  def from[A](coll: collection.IterableOnce[A]): ListBuffer[A] = new ListBuffer[A] ++= coll
+
+  def newBuilder[A]: Builder[A, ListBuffer[A]] = new GrowableBuilder(empty[A])
+
+  def empty[A]: ListBuffer[A] = new ListBuffer[A]
 }
