@@ -2,7 +2,7 @@
 
 function bench() {
   local F=$PWD/bench/target/result-$v.json
-  sbt 'set scalaVersion := "'$v'"' 'bench/jmh:run bench.ListBufferBenchmark -f1 -rf json -rff '"$F" 1>&2; 
+  sbt ++$1'!' 'show bench/scalaVersion' 'bench/jmh:run bench.ListBufferBenchmark -f2 -rf json -rff '"$F" 1>&2; 
   local gisturl=$(gist "$F")
   echo ${gisturl:(-32)}
 }
