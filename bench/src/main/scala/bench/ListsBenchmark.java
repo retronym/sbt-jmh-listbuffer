@@ -7,6 +7,8 @@ import scala.collection.mutable.ListBuffer;
 
 import java.util.concurrent.TimeUnit;
 
+import static org.openjdk.jmh.annotations.CompilerControl.Mode.PRINT;
+
 @State(Scope.Thread)
 @Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
 @Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
@@ -28,7 +30,7 @@ public class ListsBenchmark {
 
   @Setup
   public void setup() {
-    size = 100;
+    size = 10000;
   }
 
   @Benchmark
@@ -67,6 +69,18 @@ public class ListsBenchmark {
   @Benchmark
   public Object scalaCollectionImmutableList(Blackhole bh) {
     ListBuffer<String> buffer = new ListBuffer<>();
+    int i = 0;
+    while (i < size) {
+      buffer.$plus$eq("");
+      i += 1;
+    }
+    return buffer.result();
+  }
+
+  @Benchmark
+  @CompilerControl(PRINT)
+  public Object benchList(Blackhole bh) {
+    ListBuffer1<String> buffer = new ListBuffer1<>();
     int i = 0;
     while (i < size) {
       buffer.$plus$eq("");
