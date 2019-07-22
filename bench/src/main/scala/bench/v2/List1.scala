@@ -1,5 +1,7 @@
 package bench.v2
 
+import java.lang.invoke.VarHandle
+
 sealed abstract class List1[+A] {
   def isEmpty: Boolean
   def head: A
@@ -16,6 +18,8 @@ case object Nil1 extends List1[Nothing] {
 }
 
 final case class ::[B](override val head: B, private[bench] var tl: List1[B]) extends List1[B] {
+  VarHandle.releaseFence()
+
   override def tail : List1[B] = tl
   override def isEmpty: Boolean = false
 }

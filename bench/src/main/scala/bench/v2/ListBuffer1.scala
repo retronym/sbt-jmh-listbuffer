@@ -1,5 +1,7 @@
 package bench.v2
 
+import java.lang.invoke.VarHandle
+
 final class ListBuffer1[A] {
   private var start: List1[A] = Nil1
   private var last0: ::[A] = _
@@ -16,15 +18,9 @@ final class ListBuffer1[A] {
     */
   def += (x: A): Unit = {
     ensureUnaliased()
-    val last1 = new :: (x, Nil1)
-    if (isEmpty) {
-      last0 = last1
-      start = last0
-    } else {
-      val last1 = last0
-      last0 = last1
-      last1.tl = last0
-    }
+    var last1 = new ::(x, Nil1)
+    if (len == 0) start = last1; else last0.tl = last1
+    last0 = last1
     len += 1
   }
 
@@ -42,6 +38,7 @@ final class ListBuffer1[A] {
 
   def result: List1[A] = {
     exported = !isEmpty
+    VarHandle.releaseFence()
     start
   }
 

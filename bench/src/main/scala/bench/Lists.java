@@ -1,5 +1,7 @@
 package bench;
 
+import bench.v2.Nil1$;
+
 import java.lang.invoke.VarHandle;
 
 class Lists {
@@ -44,9 +46,8 @@ class Lists {
 
     void addOne(Object elem) {
       ensureUnaliased();
-      Cons last1 = new Cons(elem, Nil.instance);
-      if (len == 0) start = last1;
-      else last0.next = last1;
+      var last1 = new Cons(elem, Nil.instance);
+      if (len == 0) start = last1; else last0.next = last1;
       last0 = last1;
       len += 1;
     }
@@ -81,9 +82,8 @@ class Lists {
 
     void addOne(Object elem) {
       ensureUnaliased();
-      Cons last1 = Cons.applyFenced(elem, Nil.instance);
-      if (len == 0) start = last1;
-      else last0.next = last1;
+      var last1 = Cons.applyFenced(elem, Nil.instance);
+      if (len == 0) start = last1; else last0.next = last1;
       last0 = last1;
       len += 1;
     }
@@ -119,9 +119,8 @@ class Lists {
 
     void addOne(Object elem) {
       ensureUnaliased();
-      Cons last1 = new Cons(elem, Nil.instance);
-      if (len == 0) start = last1;
-      else last0.next = last1;
+      var last1 = new Cons(elem, Nil.instance);
+      if (len == 0) start = last1; else last0.next = last1;
       last0 = last1;
       len += 1;
     }

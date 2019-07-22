@@ -1,14 +1,11 @@
 package bench;
 
 
-import bench.v1.ListBuffer1;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 import scala.collection.mutable.ListBuffer;
 
 import java.util.concurrent.TimeUnit;
-
-import static org.openjdk.jmh.annotations.CompilerControl.Mode.PRINT;
 
 @State(Scope.Thread)
 @Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
@@ -80,7 +77,7 @@ public class ListsBenchmark {
 
   @Benchmark
   public Object benchListV1(Blackhole bh) {
-    bench.v1.ListBuffer1<String> buffer = new bench.v1.ListBuffer1<>();
+    bench.v1.ListBuffer<String> buffer = new bench.v1.ListBuffer<>();
     int i = 0;
     while (i < size) {
       buffer.$plus$eq("");
@@ -88,6 +85,7 @@ public class ListsBenchmark {
     }
     return buffer.result();
   }
+
 
   @Benchmark
   public Object benchListV2(Blackhole bh) {

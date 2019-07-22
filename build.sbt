@@ -1,4 +1,4 @@
-scalaVersion in ThisBuild := "2.12.8"
+scalaVersion in ThisBuild := "2.13.0"
 
 name := "sbt-jmh-template"
 
