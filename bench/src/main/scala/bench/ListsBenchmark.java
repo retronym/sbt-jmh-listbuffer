@@ -19,8 +19,7 @@ import java.util.concurrent.TimeUnit;
     "-XX:InitialCodeCacheSize=512m",
     "-XX:ReservedCodeCacheSize=512m",
     "-XX:+UseParallelGC",
-    "-XX:-UseBiasedLocking",
-    "-XX:+AlwaysPreTouch"})
+    "-XX:-UseBiasedLocking"})
 @BenchmarkMode({Mode.Throughput})
 @OutputTimeUnit(TimeUnit.SECONDS)
 public class ListsBenchmark {

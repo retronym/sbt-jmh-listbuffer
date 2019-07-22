@@ -21,12 +21,12 @@ class ListBuffer[A]
 
   private type Predecessor[A0] = ::[A0] /*| Null*/
 
-  def iterator = first.iterator
+  def iterator = ???
 
   override def iterableFactory: SeqFactory[ListBuffer] = ListBuffer
 
   @throws[IndexOutOfBoundsException]
-  def apply(i: Int) = first.apply(i)
+  def apply(i: Int) = ???
 
   def length = len
   override def knownSize = len
