@@ -1,5 +1,22 @@
 package bench;
 
+import scala.*;
+import scala.collection.*;
+import scala.collection.Iterable;
+import scala.collection.immutable.*;
+import scala.collection.immutable.IndexedSeq;
+import scala.collection.immutable.LinearSeq;
+import scala.collection.immutable.Seq;
+import scala.collection.immutable.Set;
+import scala.collection.mutable.Buffer;
+import scala.collection.mutable.Builder;
+import scala.collection.mutable.Map;
+import scala.collection.mutable.StringBuilder;
+import scala.math.Numeric;
+import scala.math.Ordering;
+import scala.reflect.ClassTag;
+import scala.util.Either;
+
 import java.lang.invoke.VarHandle;
 
 class Lists {
@@ -44,42 +61,6 @@ class Lists {
 
     void addOne(Object elem) {
       ensureUnaliased();
-      var last1 = new Cons(elem, Nil.instance);
-      if (len == 0) start = last1; else last0.next = last1;
-      last0 = last1;
-      len += 1;
-    }
-
-    List result() {
-      aliased = len > 0;
-      return start;
-    }
-
-    private void ensureUnaliased() {
-      if (aliased) copyElems();
-    }
-
-    private void copyElems() {
-      if (start instanceof Cons) {
-        Cons rest = (Cons) this.start;
-        ListBufferResultFence buf = new ListBufferResultFence();
-        do {
-          buf.addOne(rest.head);
-        } while (rest.next != Nil.instance && ((rest = (Cons) rest.next) == rest));
-        this.start = buf.start;
-        this.last0 = buf.last0;
-      }
-    }
-  }
-
-  static class ListBufferConstructorAndResultFence {
-    private List start = Nil.instance;
-    private Cons last0 = null;
-    private boolean aliased = false;
-    private int len = 0;
-
-    void addOne(Object elem) {
-      ensureUnaliased();
       var last1 = Cons.applyFenced(elem, Nil.instance);
       if (len == 0) start = last1; else last0.next = last1;
       last0 = last1;
@@ -99,44 +80,7 @@ class Lists {
     private void copyElems() {
       if (start instanceof Cons) {
         Cons rest = (Cons) this.start;
-        ListBufferResultFence buf = new ListBufferResultFence();
-        do {
-          buf.addOne(rest.head);
-        } while (rest.next != Nil.instance && ((rest = (Cons) rest.next) == rest));
-        this.start = buf.start;
-        this.last0 = buf.last0;
-      }
-    }
-  }
-
-  static class ListBufferResultFence {
-    private List start = Nil.instance;
-    private Cons last0 = null;
-    private boolean aliased = false;
-    private int len = 0;
-
-    void addOne(Object elem) {
-      ensureUnaliased();
-      var last1 = new Cons(elem, Nil.instance);
-      if (len == 0) start = last1; else last0.next = last1;
-      last0 = last1;
-      len += 1;
-    }
-
-    List result() {
-      aliased = len > 0;
-      VarHandle.releaseFence();
-      return start;
-    }
-
-    private void ensureUnaliased() {
-      if (aliased) copyElems();
-    }
-
-    private void copyElems() {
-      if (start instanceof Cons) {
-        Cons rest = (Cons) this.start;
-        ListBufferResultFence buf = new ListBufferResultFence();
+        ListBuffer buf = new ListBuffer();
         do {
           buf.addOne(rest.head);
         } while (rest.next != Nil.instance && ((rest = (Cons) rest.next) == rest));

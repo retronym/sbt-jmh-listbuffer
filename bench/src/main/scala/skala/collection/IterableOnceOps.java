@@ -1,0 +1,1 @@
+package skala.collection; public interface IterableOnceOps  { public static void $init$(skala.collection.IterableOnceOps self) {} }

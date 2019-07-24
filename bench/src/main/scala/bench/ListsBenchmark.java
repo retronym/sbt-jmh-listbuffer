@@ -23,16 +23,12 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMode({Mode.Throughput})
 @OutputTimeUnit(TimeUnit.SECONDS)
 public class ListsBenchmark {
+  @Param({"10"})
   private int size = -1;
 
-  @Setup
-  public void setup() {
-    size = 10000;
-  }
-
   @Benchmark
-  public Object scala212(Blackhole bh) {
-    Lists.ListBuffer buffer = new Lists.ListBuffer();
+  public Object javaListBufferPlusEqAddOne() {
+    ListBuffer<String> buffer = new ListBuffer<String>();
     int i = 0;
     while (i < size) {
       buffer.addOne("");
@@ -42,8 +38,8 @@ public class ListsBenchmark {
   }
 
   @Benchmark
-  public Object scala213(Blackhole bh) {
-    Lists.ListBufferConstructorAndResultFence buffer = new Lists.ListBufferConstructorAndResultFence();
+  public Object scalaListBufferPlusEqAddOne() {
+    ListBuffer<String> buffer = new ListBuffer<>();
     int i = 0;
     while (i < size) {
       buffer.addOne("");
@@ -53,18 +49,7 @@ public class ListsBenchmark {
   }
 
   @Benchmark
-  public Object scalaResultFenceOnly(Blackhole bh) {
-    Lists.ListBufferResultFence buffer = new Lists.ListBufferResultFence();
-    int i = 0;
-    while (i < size) {
-      buffer.addOne("");
-      i += 1;
-    }
-    return buffer.result();
-  }
-
-  @Benchmark
-  public Object scalaCollectionImmutableList(Blackhole bh) {
+  public Object scalaListBufferPlusEq() {
     ListBuffer<String> buffer = new ListBuffer<>();
     int i = 0;
     while (i < size) {
@@ -75,35 +60,25 @@ public class ListsBenchmark {
   }
 
   @Benchmark
-  public Object benchListV1(Blackhole bh) {
-    bench.v1.ListBuffer<String> buffer = new bench.v1.ListBuffer<>();
+  public Object skalaAddOne() {
+    skala.collection.mutable.ListBuffer buffer = new skala.collection.mutable.ListBuffer();
     int i = 0;
     while (i < size) {
-      buffer.$plus$eq("");
+      buffer.addOne("");
       i += 1;
     }
     return buffer.result();
   }
 
   @Benchmark
-  public Object benchListV2(Blackhole bh) {
-    bench.v2.ListBuffer<String> buffer = new bench.v2.ListBuffer<>();
+  public Object skalaPlusEq() {
+    skala.collection.mutable.ListBuffer buffer = new skala.collection.mutable.ListBuffer();
     int i = 0;
     while (i < size) {
-      buffer.$plus$eq("");
-      i += 1;
-    }
-    return buffer.result();
-  }
-
-  @Benchmark
-  public Object benchListV3(Blackhole bh) {
-    bench.v3.ListBuffer1<String> buffer = new bench.v3.ListBuffer1<>();
-    int i = 0;
-    while (i < size) {
-      buffer.$plus$eq("");
+      buffer.plusEq1("");
       i += 1;
     }
     return buffer.result();
   }
 }
+

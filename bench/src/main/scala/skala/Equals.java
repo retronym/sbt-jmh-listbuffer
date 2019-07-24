@@ -1,0 +1,1 @@
+package skala; public interface Equals  { public static void $init$(skala.Equals self) {} }

@@ -1,0 +1,1 @@
+package skala.collection.generic; public interface DefaultSerializable extends java.io.Serializable { public static void $init$(skala.collection.generic.DefaultSerializable self) {} }

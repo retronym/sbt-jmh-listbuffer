@@ -1,0 +1,1 @@
+package skala.collection.immutable; public interface LinearSeq extends skala.collection.immutable.Seq,skala.collection.LinearSeq,skala.collection.immutable.LinearSeqOps { public static void $init$(skala.collection.immutable.LinearSeq self) {} }

@@ -1,0 +1,1 @@
+package skala.collection; public interface LinearSeq extends skala.collection.Seq,skala.collection.LinearSeqOps { public static void $init$(skala.collection.LinearSeq self) {} }

@@ -1,0 +1,1 @@
+package skala.collection.mutable; public class AbstractSeq extends skala.collection.AbstractSeq implements skala.collection.mutable.Seq { public AbstractSeq() { super();  } }

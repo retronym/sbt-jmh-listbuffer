@@ -1,0 +1,1 @@
+package skala.collection; public interface Seq extends skala.collection.Iterable,skala.PartialFunction,skala.collection.SeqOps,skala.Equals { public static void $init$(skala.collection.Seq self) {} }
