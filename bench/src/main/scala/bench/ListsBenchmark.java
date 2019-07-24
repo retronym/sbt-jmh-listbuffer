@@ -48,27 +48,6 @@ public class ListsBenchmark {
     return buffer.result();
   }
 
-  @Benchmark
-  public Object skalaAddOne() {
-    skala.collection.mutable.ListBuffer buffer = new skala.collection.mutable.ListBuffer();
-    int i = 0;
-    while (i < size) {
-      buffer.addOne("");
-      i += 1;
-    }
-    return buffer.result();
-  }
-
-  @Benchmark
-  public Object skalaPlusEq() {
-    skala.collection.mutable.ListBuffer buffer = new skala.collection.mutable.ListBuffer();
-    int i = 0;
-    while (i < size) {
-      buffer.plusEq1("");
-      i += 1;
-    }
-    return buffer.result();
-  }
 
   @Benchmark
   public void all(Blackhole bh) {
