@@ -1,1 +1,0 @@
-package skala.collection.mutable; public interface Builder extends skala.collection.mutable.Growable { public static void $init$(skala.collection.mutable.Builder self) {} }

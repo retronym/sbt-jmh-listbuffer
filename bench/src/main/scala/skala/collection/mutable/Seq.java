@@ -1,1 +1,0 @@
-package skala.collection.mutable; public interface Seq extends skala.collection.mutable.Iterable,skala.collection.Seq,skala.collection.mutable.SeqOps { public static void $init$(skala.collection.mutable.Seq self) {} }

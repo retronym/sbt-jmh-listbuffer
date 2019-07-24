@@ -1,1 +1,0 @@
-package skala.collection; public interface StrictOptimizedSeqOps extends skala.collection.SeqOps,skala.collection.StrictOptimizedIterableOps { public static void $init$(skala.collection.StrictOptimizedSeqOps self) {} }

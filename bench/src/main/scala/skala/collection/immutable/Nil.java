@@ -1,1 +1,0 @@
-package skala.collection.immutable; public class Nil extends java.lang.Object  { public Nil() { super();  } }

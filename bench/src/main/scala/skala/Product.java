@@ -1,1 +1,0 @@
-package skala; public interface Product extends skala.Equals { public static void $init$(skala.Product self) {} }

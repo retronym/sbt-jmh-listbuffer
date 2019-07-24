@@ -1,1 +1,0 @@
-package skala; public interface PartialFunction extends skala.Function1 { public static void $init$(skala.PartialFunction self) {} }

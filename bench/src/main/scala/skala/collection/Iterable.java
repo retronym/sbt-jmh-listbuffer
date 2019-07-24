@@ -1,1 +1,0 @@
-package skala.collection; public interface Iterable extends skala.collection.IterableFactoryDefaults { public static void $init$(skala.collection.Iterable self) {} }

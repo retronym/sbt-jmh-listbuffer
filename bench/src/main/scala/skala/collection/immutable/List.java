@@ -1,1 +1,0 @@
-package skala.collection.immutable; public class List extends skala.collection.immutable.AbstractSeq implements skala.collection.immutable.LinearSeq,skala.collection.StrictOptimizedLinearSeqOps,skala.collection.immutable.StrictOptimizedSeqOps,skala.collection.generic.DefaultSerializable { public List() { super();  } }

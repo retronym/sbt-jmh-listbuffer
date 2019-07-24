@@ -1,1 +1,0 @@
-package skala.collection.immutable; public interface StrictOptimizedSeqOps extends skala.collection.immutable.SeqOps,skala.collection.StrictOptimizedSeqOps { public static void $init$(skala.collection.immutable.StrictOptimizedSeqOps self) {} }

@@ -1,1 +1,0 @@
-package skala.collection.mutable; public interface Shrinkable  { public static void $init$(skala.collection.mutable.Shrinkable self) {} }

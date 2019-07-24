@@ -1,1 +1,0 @@
-package skala.collection; public class AbstractSeq extends skala.collection.AbstractIterable implements skala.collection.Seq { public AbstractSeq() { super();  } }

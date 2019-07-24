@@ -1,1 +1,0 @@
-package skala.collection.mutable; public interface SeqOps extends skala.collection.SeqOps,skala.collection.mutable.Cloneable { public static void $init$(skala.collection.mutable.SeqOps self) {} }

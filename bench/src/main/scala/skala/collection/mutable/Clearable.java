@@ -1,1 +1,0 @@
-package skala.collection.mutable; public interface Clearable  { public static void $init$(skala.collection.mutable.Clearable self) {} }
