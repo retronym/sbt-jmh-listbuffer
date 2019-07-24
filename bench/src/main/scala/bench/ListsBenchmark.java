@@ -80,5 +80,13 @@ public class ListsBenchmark {
     }
     return buffer.result();
   }
-}
 
+  @Benchmark
+  public void all(Blackhole bh) {
+    bh.consume(javaListBufferPlusEqAddOne());
+    bh.consume(scalaListBufferPlusEqAddOne());
+    bh.consume(scalaListBufferPlusEq());
+    bh.consume(skalaAddOne());
+    bh.consume(skalaPlusEq());
+  }
+}
