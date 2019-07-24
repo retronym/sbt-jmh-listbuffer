@@ -38,18 +38,7 @@ public class ListsBenchmark {
   }
 
   @Benchmark
-  public Object scalaListBufferPlusEqAddOne() {
-    ListBuffer<String> buffer = new ListBuffer<>();
-    int i = 0;
-    while (i < size) {
-      buffer.addOne("");
-      i += 1;
-    }
-    return buffer.result();
-  }
-
-  @Benchmark
-  public Object scalaListBufferPlusEq() {
+  public Object scalaListBufferPlusEq_212() {
     ListBuffer<String> buffer = new ListBuffer<>();
     int i = 0;
     while (i < size) {
@@ -84,8 +73,7 @@ public class ListsBenchmark {
   @Benchmark
   public void all(Blackhole bh) {
     bh.consume(javaListBufferPlusEqAddOne());
-    bh.consume(scalaListBufferPlusEqAddOne());
-    bh.consume(scalaListBufferPlusEq());
+    bh.consume(scalaListBufferPlusEq_212());
     bh.consume(skalaAddOne());
     bh.consume(skalaPlusEq());
   }
